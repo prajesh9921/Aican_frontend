@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
+import LoginAndRegisterScreen from "./screen/Login&Register/login&register";
+import Home from "./screen/Homepage/home";
+import BookmarkPage from "./screen/Bookmark/bookmark";
+import { ToastContainer } from "react-toastify";
+import StoryCard from "./components/Story/storycard";
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+     <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+      <Routes>
+        <Route path="/" element={<Navigate to="/home" />} />
+        <Route path="/login" element={<LoginAndRegisterScreen />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/bookmark" element={<BookmarkPage />} />
+        <Route path="/story" element={<StoryCard />} />
+      </Routes>
+    </>
   );
 }
 

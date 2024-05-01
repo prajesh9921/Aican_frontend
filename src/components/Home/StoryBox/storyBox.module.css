@@ -1,0 +1,93 @@
+p {
+  color: #fff;
+  font-size: 12px;
+  margin: 0;
+}
+
+.mainBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 2rem;
+}
+
+.storyBox {
+  height: 350px;
+  width: 200px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 1rem;
+  position: relative;
+  overflow: visible;
+  margin: 0 auto;
+}
+
+.storyInfo {
+  background-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.7),
+    rgba(0, 0, 0, 0)
+  );
+  height: 100%;
+  width: 100%;
+  border-radius: 1rem;
+  box-sizing: border-box;
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.storyInfo .heading {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.editBtn {
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff;
+  display: flex;
+  gap: 0.5rem;
+  height: 30px;
+  box-sizing: border-box;
+  padding: 0 0.5rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px !important;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 1.5rem;
+  box-sizing: border-box;
+  margin: 2rem 0;
+}
+
+.nostories {
+  margin: 5% 0;
+  color: #8e8e8e;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+@media only screen and (max-width: 480px) {
+  .mainBox {
+    margin-bottom: 2rem;
+  }
+
+  .gridContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .storyBox {
+    height: 60vh;
+    width: 90vw;
+    margin: 0;
+  }
+}
