@@ -56,8 +56,8 @@ export default function BookmarkPage() {
           <div className={styles.nodata}>No bookmarked stories found</div>
         ) : (
           <div className={styles.gridContainer}>
-            {data?.map((item) => (
-              <BoxCard postData={item?.data[0]} />
+            {data?.map((item, index) => (
+              <BoxCard key={index} postData={item?.data[0]} />
             ))}
           </div>
         )}

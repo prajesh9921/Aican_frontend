@@ -5,13 +5,17 @@ import CButton from "../../Button/button";
 import { ThreeDots } from "react-loader-spinner";
 import RemoveSpace from "../../../utils/removespace";
 import { GetStoryByQuery, GetYourStory } from "../../../api/stories";
-import { Paper } from '@mui/material';
-import { useNavigate } from "react-router-dom";
+import { Paper } from "@mui/material";
 
-export default function StoryBox({ setStoryModalData, showModal, query, showEdit = false }) {
+export default function StoryBox({
+  storyModalData,
+  showModal,
+  query,
+  showEdit = false,
+  openAddStoryModal,
+  setAddStoryData,
+}) {
   let userid = localStorage.getItem("userId");
-
-  const navigate = useNavigate();
 
   const DEFAULT_ITEM_COUNT = 5;
 
@@ -30,25 +34,35 @@ export default function StoryBox({ setStoryModalData, showModal, query, showEdit
   };
 
   const handleShowStoryModal = (data) => {
-    setStoryModalData(data)
+    storyModalData(data);
     showModal(true);
-  }
+  };
 
+  // Box Card Component
   const BoxCard = ({ postData, allData }) => {
+    const handleEditStory = () => {
+      setAddStoryData(allData);
+      openAddStoryModal({status: true, root: 'edit'});
+    };
     return (
       <div
-        onClick={() => handleShowStoryModal(allData)}
         className={styles.storyBox}
         style={{ backgroundImage: `url(${postData?.img})` }}
       >
-        <div className={styles.storyInfo}>
+        <div
+          onClick={() => handleShowStoryModal(allData)}
+          className={styles.storyInfo}
+        >
           <p className={styles.heading}>{postData?.title}</p>
           <p style={{ fontSize: 10 }}>{postData?.subtitle}</p>
         </div>
-
         {/* Edit Button */}
         {showEdit ? (
-          <Paper elevation={2} className={styles.editBtn}>
+          <Paper
+            onClick={handleEditStory}
+            elevation={2}
+            className={styles.editBtn}
+          >
             <FaEdit size={15} />
             <p style={{ color: "#000" }}>Edit</p>
           </Paper>
@@ -57,17 +71,18 @@ export default function StoryBox({ setStoryModalData, showModal, query, showEdit
     );
   };
 
+  // Function to fetch data
   const FetchData = async () => {
     let formatedquery = RemoveSpace(query);
     const res = showEdit
       ? await GetYourStory(userid, setLoading)
-      : await GetStoryByQuery(formatedquery, setLoading);
+      : await GetStoryByQuery(formatedquery.toLowerCase(), setLoading);
     setData(res?.data);
   };
 
   useEffect(() => {
     FetchData();
-  }, []);
+  }, [query]);
 
   return (
     <div className={styles.mainBox}>
@@ -77,8 +92,8 @@ export default function StoryBox({ setStoryModalData, showModal, query, showEdit
 
       {data?.length !== 0 ? (
         <div className={styles.gridContainer}>
-          {data?.slice(0, itemsToShow).map((item) => (
-            <BoxCard postData={item?.data[0]} allData={item} />
+          {data?.slice(0, itemsToShow).map((item, index) => (
+            <BoxCard key={index} postData={item?.data[0]} allData={item} />
           ))}
         </div>
       ) : loading ? (

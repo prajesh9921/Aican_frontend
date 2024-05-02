@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./header.module.css";
 import CButton from "../Button/button";
 import Spacer from "../Spacer/spacer";
@@ -9,7 +9,7 @@ import StringAvatar from "./avatarnaming";
 import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
 
-export default function Header({ showModal, setAuthType }) {
+export default function Header({ toggleDisplay, openAddStoryModal }) {
   let token = localStorage.getItem("token");
   let userEmail = localStorage.getItem("userEmail");
 
@@ -19,10 +19,8 @@ export default function Header({ showModal, setAuthType }) {
   const [LogoutMenu, setLogoutMenu] = useState(false);
   const [screenSize, setScreenSize] = useState(window.innerWidth);
 
-  const TypeAuth = (type) => {
-    setAuthType(type);
-    showModal(true);
-    setOpenMenu(false);
+  const handleLoginAndRegister = (type) => {
+    navigate("/login", { state: { type: type } });
   };
 
   const showNavbar = () => {
@@ -35,8 +33,8 @@ export default function Header({ showModal, setAuthType }) {
   };
 
   const handleNavigate = () => {
-    navigate('/bookmark');
-  }
+    navigate("/bookmark");
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -56,7 +54,7 @@ export default function Header({ showModal, setAuthType }) {
   return (
     <div className={openMenu ? styles.containerexpanded : styles.container}>
       <div className={styles.navbar}>
-        <h2 onClick={() => navigate('/home')} >SwipTory</h2>
+        <h2 onClick={() => navigate("/home")}>SwipTory</h2>
         <div className={styles.headerbtn}>
           {token ? (
             <UserMenu
@@ -65,6 +63,7 @@ export default function Header({ showModal, setAuthType }) {
               setDialog={setLogoutMenu}
               handleLogout={handleLogout}
               handleNavigate={handleNavigate}
+              setAddStoryModal={openAddStoryModal}
             />
           ) : (
             <>
@@ -72,14 +71,14 @@ export default function Header({ showModal, setAuthType }) {
                 title="Register Now"
                 color="#FF7373"
                 style={{ color: "#fff" }}
-                onClick={() => TypeAuth("register")}
+                onClick={() => handleLoginAndRegister("register")}
               />
               <Spacer width="20px" />
               <CButton
                 title="Sign In"
                 color="#73ABFF"
                 style={{ color: "#fff" }}
-                onClick={() => TypeAuth("login")}
+                onClick={() => handleLoginAndRegister("login")}
               />
             </>
           )}
@@ -94,20 +93,26 @@ export default function Header({ showModal, setAuthType }) {
       {openMenu ? (
         <div className={styles.headerbtn2}>
           {token ? (
-            <UserMenuMobile handleNavigate={handleNavigate} userEmail={userEmail} handleLogout={handleLogout} />
+            <UserMenuMobile
+              handleNavigate={handleNavigate}
+              userEmail={userEmail}
+              handleLogout={handleLogout}
+              setAddStoryModal={openAddStoryModal}
+              toggleDisplay={toggleDisplay}
+            />
           ) : (
             <div className={styles.smauthbtn}>
               <CButton
                 title="Register"
                 color="#FF7373"
                 style={{ color: "#fff" }}
-                onClick={() => TypeAuth("register")}
+                onClick={() => handleLoginAndRegister("register")}
               />
               <CButton
                 title="LogIn"
                 color="#FF7373"
                 style={{ color: "#fff" }}
-                onClick={() => TypeAuth("login")}
+                onClick={() => handleLoginAndRegister("login")}
               />
             </div>
           )}
@@ -117,8 +122,14 @@ export default function Header({ showModal, setAuthType }) {
   );
 }
 
-const UserMenu = ({ userEmail, dialog, setDialog, handleLogout, handleNavigate }) => {
-
+const UserMenu = ({
+  userEmail,
+  dialog,
+  setDialog,
+  handleLogout,
+  handleNavigate,
+  setAddStoryModal,
+}) => {
   return (
     <>
       <CButton
@@ -129,7 +140,12 @@ const UserMenu = ({ userEmail, dialog, setDialog, handleLogout, handleNavigate }
         onClick={handleNavigate}
       />
       <Spacer width="20px" />
-      <CButton title="Add Story" color="#FF7373" style={{ color: "#fff" }} />
+      <CButton
+        onClick={() => setAddStoryModal({ status: true, root: "new" })}
+        title="Add Story"
+        color="#FF7373"
+        style={{ color: "#fff" }}
+      />
       <Spacer width="20px" />
       <Avatar {...StringAvatar(userEmail)} />
       <Spacer width="20px" />
@@ -140,23 +156,45 @@ const UserMenu = ({ userEmail, dialog, setDialog, handleLogout, handleNavigate }
         className={styles.logoutmenu}
         style={{ display: dialog ? "flex" : "none" }}
       >
-        <p style={{color: '#000', marginBottom: 20, fontSize: '1rem'}}>{userEmail}</p>
-        <CButton onClick={handleLogout} title="Logout" color="#FF7373" style={{ color: "#fff" }} />
+        <p style={{ color: "#000", marginBottom: 20, fontSize: "1rem" }}>
+          {userEmail}
+        </p>
+        <CButton
+          onClick={handleLogout}
+          title="Logout"
+          color="#FF7373"
+          style={{ color: "#fff" }}
+        />
       </Paper>
     </>
   );
 };
 
-const UserMenuMobile = ({ userEmail, handleLogout, handleNavigate }) => {
-
+const UserMenuMobile = ({
+  userEmail,
+  handleLogout,
+  handleNavigate,
+  setAddStoryModal,
+  toggleDisplay,
+}) => {
   return (
     <div className={styles.smloginMenu}>
-      <div style={{ display: "flex", gap: "1rem", alignItems: 'center' }}>
+      <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
         <Avatar {...StringAvatar(userEmail)} />
-        <p style={{color: '#000', fontWeight: 'bold'}}>{userEmail}</p>
+        <p style={{ color: "#000", fontWeight: "bold" }}>{userEmail}</p>
       </div>
-      <CButton title="Your Story" color="#FF7373" style={{ color: "#fff" }} />
-      <CButton title="Add Story" color="#FF7373" style={{ color: "#fff" }} />
+      <CButton
+        onClick={toggleDisplay}
+        title="Your Story"
+        color="#FF7373"
+        style={{ color: "#fff" }}
+      />
+      <CButton
+        onClick={() => setAddStoryModal({ status: true, root: "new" })}
+        title="Add Story"
+        color="#FF7373"
+        style={{ color: "#fff" }}
+      />
       <CButton
         title="Bookmarks"
         color="#FF7373"
@@ -164,7 +202,12 @@ const UserMenuMobile = ({ userEmail, handleLogout, handleNavigate }) => {
         icon={<FaBookmark />}
         onClick={handleNavigate}
       />
-      <CButton onClick={handleLogout} title="Logout" color="#FF7373" style={{ color: "#fff" }} />
+      <CButton
+        onClick={handleLogout}
+        title="Logout"
+        color="#FF7373"
+        style={{ color: "#fff" }}
+      />
     </div>
   );
 };

@@ -1,52 +1,70 @@
 .main {
-    background-color: transparent;
-    height: 80vh;
-    width: 40vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
+  background-color: transparent;
+  height: 80vh;
+  width: 40vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
 }
 
 .storydiv {
-    height: 100%;
-    width: 60%;
-    position: relative;
-    box-shadow: 0 3px 10px rgb(255 255 255 / 0.8);
+  height: 100%;
+  width: 50%;
+  position: relative;
+  box-shadow: 0 3px 10px rgb(255 255 255 / 0.8);
 }
 
-.nexticon, .previcon {
-    color: #fff;
+.nexticon,
+.previcon {
+  color: #fff;
 }
 
 .storyInfo {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 1000;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    box-sizing: border-box;
-    padding: 2rem 0.8rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  box-sizing: border-box;
+  padding: 2rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .heading {
-    font-size: 1rem;
-    font-weight: bold;
-    margin-bottom: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
 .sub {
-    font-size: 0.7rem;
-    margin-bottom: 1rem;
+  font-size: 0.7rem;
+  margin-bottom: 1rem;
+}
+
+@media only screen and (max-width: 480px) {
+  .main {
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .nexticon,
+  .previcon {
+    display: none;
+  }
+
+  .storydiv {
+    height: 100%;
+    width: 100%;
+  }
 }

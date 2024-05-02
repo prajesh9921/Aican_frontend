@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./storycard.module.css";
 import { FaAngleLeft, FaAngleRight, FaBookmark, FaHeart } from "react-icons/fa";
 import { SlPaperPlane } from "react-icons/sl";
 import { MdClose } from "react-icons/md";
 import Stories from "react-insta-stories";
-import { BookmarkStory } from "../../api/stories";
+import { BookmarkStory, LikeStory } from "../../api/stories";
+import { Oval } from "react-loader-spinner";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function StoryCard({ data, closeModal }) {
   const userID = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
+  const navigate = useNavigate();
 
   const storyData = data?.data?.map((item) => ({ url: item.img }));
   const [currentIdx, setCurrentIdx] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [like, setLike] = useState(false);
 
   const next = () => {
     if (currentIdx < data?.data?.length - 1) {
@@ -33,17 +37,37 @@ export default function StoryCard({ data, closeModal }) {
 
   const ToBookmarkTheStory = async () => {
     if (token) {
-      const res = await BookmarkStory(data?._id, setLoading);
-      if (res) {
-        return toast.success(res?.message);
-      } else {
-        return toast.error("Error in bookmarking story");
-      }
+      await BookmarkStory(data?._id, setLoading);
     } else {
-        closeModal(false);
-        return toast.success("Login to bookmark the story");
+      closeModal(false);
+      navigate("/login")
     }
   };
+
+  const ToLikeTheStory = async () => {
+    if (token) {
+      setLike(true);
+      await LikeStory(data?._id);
+    } else {
+      closeModal(false);
+      navigate("/login")
+    }
+  };
+
+  const Spinner = () => {
+    return <Oval visible={true} height="30" width="30" color="#fff" />;
+  };
+
+  // Function to share the link
+  const handleSendLink = async () => {
+    const url = `http://localhost:3000/story/${data?._id}`
+    try {
+      await navigator.clipboard.writeText(url);
+      toast.success("Link copied to clipboard")
+    } catch (error) {
+      console.error('Failed to copy text: ', error);
+    }
+  }
 
   return (
     <div className={styles.main}>
@@ -58,6 +82,7 @@ export default function StoryCard({ data, closeModal }) {
           storyStyles={{ zIndex: 1 }}
           onStoryEnd={next}
           currentIndex={currentIdx}
+          loop={true}
         />
 
         <div className={styles.storyInfo}>
@@ -68,7 +93,7 @@ export default function StoryCard({ data, closeModal }) {
               color="#fff"
               style={{ margin: 0, cursor: "pointer" }}
             />
-            <SlPaperPlane size={20} color="#fff" style={{ margin: 0 }} />
+            <SlPaperPlane onClick={handleSendLink} size={20} color="#fff" style={{ margin: 0 }} />
           </div>
 
           <div className={styles.storydetails}>
@@ -76,21 +101,26 @@ export default function StoryCard({ data, closeModal }) {
             <p className={styles.sub}>{data?.data[currentIdx]?.subtitle}</p>
 
             <div className={styles.options}>
-              <FaBookmark
-                size={20}
-                color={
-                  data?.bookedMarkedBy?.includes(userID) ? "#085CFF" : "#fff"
-                }
-                style={{ margin: 0 }}
-                onClick={ToBookmarkTheStory}
-              />
+              {loading ? (
+                <Spinner />
+              ) : (
+                <FaBookmark
+                  size={20}
+                  color={
+                    data?.bookedMarkedBy?.includes(userID) ? "#085CFF" : "#fff"
+                  }
+                  style={{ margin: 0 }}
+                  onClick={ToBookmarkTheStory}
+                />
+              )}
               <span
                 style={{ display: "flex", alignItems: "center", gap: "1rem" }}
               >
                 <FaHeart
                   size={20}
-                  color={data?.likedBy?.includes(userID) ? "#FF0000" : "#fff"}
+                  color={data?.likedBy?.includes(userID) || like ? "#FF0000" : "#fff"}
                   style={{ margin: 0 }}
+                  onClick={ToLikeTheStory}
                 />
                 <p>{data?.likes}</p>
               </span>
