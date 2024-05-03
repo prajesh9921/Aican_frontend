@@ -3,31 +3,37 @@ import Header from "../../components/Header/header";
 import styles from "./bookmark.module.css";
 import { GetYourBookmarkedStory } from "../../api/stories";
 import { ThreeDots } from "react-loader-spinner";
+import StoryModal from "../../components/Home/StoryModal/storymodal";
+import { FaOpenid } from "react-icons/fa";
 
 export default function BookmarkPage() {
-  const userID = localStorage.getItem("userId");
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  const BoxCard = ({ postData }) => {
+  const handleShowStoryModal = () => setOpen(true);
+
+  const BoxCard = ({ postData, alldata }) => {
     return (
       <div
         className={styles.storyBox}
         style={{ backgroundImage: `url(${postData?.img})` }}
       >
-        <div className={styles.storyInfo}>
+        <div onClick={handleShowStoryModal} className={styles.storyInfo}>
           <p className={styles.heading}>{postData?.title}</p>
           <p style={{ fontSize: 10 }}>
             {postData?.subtitle}
           </p>
         </div>
+
+        <StoryModal storyModalData={alldata} showModal={open} closeModal={setOpen}/>
       </div>
     );
   };
 
   const fetchBookedMarkedStories = async () => {
-    const res = await GetYourBookmarkedStory(userID, setLoading);
+    const res = await GetYourBookmarkedStory(setLoading);
     setData(res?.data);
   };
 
@@ -57,7 +63,7 @@ export default function BookmarkPage() {
         ) : (
           <div className={styles.gridContainer}>
             {data?.map((item, index) => (
-              <BoxCard key={index} postData={item?.data[0]} />
+              <BoxCard key={index} postData={item?.data[0]} alldata={item} />
             ))}
           </div>
         )}

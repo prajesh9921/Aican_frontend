@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import LoginAndRegisterScreen from "./screen/Login&Register/login&register";
 import Home from "./screen/Homepage/home";
 import BookmarkPage from "./screen/Bookmark/bookmark";
@@ -11,8 +11,8 @@ import ProtectedRoute from "./utils/protectedRoute";
 function App() {
   return (
     <>
-     <ToastContainer
-        position='bottom-right'
+      <ToastContainer
+        position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -23,10 +23,13 @@ function App() {
         theme="dark"
       />
       <Routes>
-        <Route path="/" element={<Navigate to="/home" />} />
-        <Route path="/login" element={<LoginAndRegisterScreen />} />
+        <Route exact path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/bookmark" element={<ProtectedRoute Component={BookmarkPage} />} />
+        <Route path="/login" element={<LoginAndRegisterScreen />} />
+        <Route
+          path="/bookmark"
+          element={<ProtectedRoute Component={BookmarkPage} />}
+        />
         <Route path="/story/:storyid" element={<StoryPage />} />
       </Routes>
     </>

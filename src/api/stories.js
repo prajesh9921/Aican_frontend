@@ -33,10 +33,10 @@ const GetYourStory = async (userid, setLoading) => {
   }
 };
 
-const GetYourBookmarkedStory = async (userid, setLoading) => {
+const GetYourBookmarkedStory = async (setLoading) => {
   try {
     setLoading(true);
-    const url = `${baseUrl}/story/bmstories/${userid}`;
+    const url = `${baseUrl}/story/bmstories/${userID}`;
     const response = await axios.get(url);
     setLoading(false);
     return response?.data;
