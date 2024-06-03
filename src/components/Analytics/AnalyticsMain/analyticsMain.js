@@ -18,7 +18,7 @@ const AnalyticsMain = ({ changePage, data, setSelectedQuiz, setSelectedPage }) =
   const [loading, setLoading] = useState(false);
   const [allQuizes, setAllQuizes] = useState(data);
 
-  const baseUrl = process.env.REACT_APP_URl;
+  const baseUrl = process.env.REACT_APP_URL;
 
   const requiredData = {
     quizType: quizToEdit?.quizType,

@@ -3,7 +3,7 @@ import CButton from "../../Button/button";
 import { toast } from "react-toastify";
 
 const SuccessModal = ({ setSteps, closeModal, quizId }) => {
-  const baseUrl = process.env.REACT_APP_URl;
+  const baseUrl = process.env.REACT_APP_URL;
 
   const handleCross = () => {
     setSteps(0);
