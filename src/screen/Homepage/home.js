@@ -1,96 +1,47 @@
-import React, { useEffect, useRef, useState } from "react";
-import Header from "../../components/Header/header";
-import FilterBox from "../../components/Home/FilterBox/filterBox";
-import StoryBox from "../../components/Home/StoryBox/storyBox";
+import React, { useState } from "react";
 import styles from "./home.module.css";
-import { FilterData } from "../../utils/filterData";
-import StoryModal from "../../components/Home/StoryModal/storymodal";
-import AddStoryModal from "../../components/AddStory/addStory";
+import SideNavBar from "../../components/HomePage/SideNav/sidenav";
+import Dashboard from "../Dashboard/dashboard";
+import Analytics from "../Analytics/analytics";
+import AddQuizModal from "../../components/AddQuizModal/addquizmodal";
 
 export default function Home() {
-  let token = localStorage.getItem("token");
-  const [showStoryModal, setShowStoryModal] = useState(false);
-  const [storyModalData, setStoryModalData] = useState("");
-  const [categoryData, setCategoryData] = useState(FilterData);
-  const [screenSize, setScreenSize] = useState(window.innerWidth);
-  const [addStoryModal, setAddStoryModal] = useState({
-    status: false,
-    root: "",
-  });
-  const [addStoryData, setAddStoryData] = useState();
-
-  const mystoriesRef = useRef();
-
-  const toggleDisplay = () => {
-    if (mystoriesRef.current.style.display === "none") {
-      mystoriesRef.current.style.display = "block";
-    } else {
-      mystoriesRef.current.style.display = "none";
-    }
-  };
-
-  useEffect(() => {
-    const handleResize = () => {
-      setScreenSize(window.innerWidth > 480);
-      if (mystoriesRef.current) {
-        if (window.innerWidth > 480) {
-          mystoriesRef.current.style.display = "block";
-        } else {
-          mystoriesRef.current.style.display = "none";
-        }
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [setCategoryData]);
+  const [selectedPage, setSelectedPage] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const [allData, setAllData] = useState();
 
   return (
-    <div>
-      <Header
-        toggleDisplay={toggleDisplay}
-        openAddStoryModal={setAddStoryModal}
-      />
+    <div className={styles.container}>
+      {/* SIDE NAVBAR */}
+      <div className={styles.sidenav}>
+        <SideNavBar
+          setShowModal={setShowModal}
+          selectedPage={selectedPage}
+          setSelectedPage={setSelectedPage}
+        />
+      </div>
 
-      {/* filter Category */}
-      <FilterBox setCategoryData={setCategoryData} />
-
-      <main className={styles.main}>
-        {token ? (
-          <div ref={mystoriesRef} className={styles.mystories}>
-            <StoryBox
-              storyModalData={setStoryModalData}
-              showModal={setShowStoryModal}
-              showEdit={true}
-              query="Your stories will appear here"
-              openAddStoryModal={setAddStoryModal}
-              setAddStoryData={setAddStoryData}
-            />
-          </div>
-        ) : null}
-        {categoryData.map((item, index) => (
-          <StoryBox
-            key={index}
-            storyModalData={setStoryModalData}
-            showModal={setShowStoryModal}
-            query={item.label}
+      {/* SELECTED PAGE */}
+      <div className={styles.contentpage}>
+        {selectedPage === 0 && (
+          <Dashboard
+            showModal={showModal}
+            allData={allData}
+            setAllData={setAllData}
           />
-        ))}
-      </main>
+        )}
+        {selectedPage === 1 && (
+          <Analytics
+            setSelectedPage={setSelectedPage}
+            allData={allData?.data}
+          />
+        )}
+      </div>
 
-      <AddStoryModal
-        data={addStoryData}
-        open={addStoryModal}
-        setOpen={setAddStoryModal}
-      />
-
-      <StoryModal
-        storyModalData={storyModalData}
-        showModal={showStoryModal}
-        closeModal={setShowStoryModal}
+      <AddQuizModal
+        showModal={showModal}
+        setSelectedPage={setSelectedPage}
+        closeModal={setShowModal}
       />
     </div>
   );

@@ -1,0 +1,45 @@
+.container {
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 1rem 0.5rem;
+}
+
+.quizzie {
+  font-family: "Jomhuria", serif;
+  font-size: 5rem;
+  letter-spacing: 5px;
+  text-align: center;
+  color: #000;
+}
+
+.pageButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;   
+}
+
+.logout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.horizontalLine {
+    height: 2px;
+    background-color: black;
+    width: 70%;
+}
+
+.logoutbtn {
+    border: none;
+    background-color: #fff;
+    font-size: 1.3rem;
+    font-weight: bold;
+    cursor: pointer;
+}

@@ -1,25 +1,31 @@
 import React from "react";
-import Button from "@mui/material/Button";
+import CircularProgress from '@mui/material/CircularProgress';
 
-export default function CButton({ title, onClick, color="#73ABFF", style, icon}) {
+export default function CButton({padding="0.5rem 1rem", title, onClick, style, selected=false, width=100, loading=false }) {
   const btnStyle = {
-    backgroundColor: color,
-    borderRadius: '20px',
-    color: '#000',
-    fontWeight: 'bold',
+    backgroundColor: selected ? "#60B84B" : '#fff',
+    borderRadius: '10px',
+    border: 'none',
+    color: selected ? '#fff' : '#9F9F9F',
+    boxShadow: '0px 0px 10px 1px rgba(0,0,0,0.2)',
+    padding: padding,
+    width: width,
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: "1rem"
   };
 
   const finalStyle = {...btnStyle, ...style};
 
   return (
-    <Button 
+    <button 
         style={finalStyle} 
-        variant="contained" 
-        disableElevation
         onClick={onClick}
-        startIcon={icon ? icon : null}
     >
       {title}
-    </Button>
+      {loading ? <CircularProgress color="inherit" size={20}/> : null }
+    </button>
   );
 }
