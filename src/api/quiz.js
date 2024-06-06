@@ -2,13 +2,11 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const baseUrl = process.env.REACT_APP_BACKEND_API;
-const token = localStorage.getItem('token');
 
 const AddQuiz = async (value, setLoading, setQuizId) => {
   try {
     setLoading(true);
     const url = `${baseUrl}/quiz/addquiz`;
-    axios.defaults.headers.common['Authorization'] = token;
     const response = await axios.post(url, value);
     setQuizId(response?.data?.quizId);
     toast.success(response?.data?.message);
