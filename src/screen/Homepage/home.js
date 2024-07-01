@@ -1,48 +1,49 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./home.module.css";
-import SideNavBar from "../../components/HomePage/SideNav/sidenav";
-import Dashboard from "../Dashboard/dashboard";
-import Analytics from "../Analytics/analytics";
-import AddQuizModal from "../../components/AddQuizModal/addquizmodal";
+import HomeCard from "../../components/homecard";
+import { useNavigate } from "react-router-dom";
+import {
+  FcAddressBook,
+  FcBusinessman,
+  FcCalculator,
+  FcBarChart,
+  FcGraduationCap
+} from "react-icons/fc";
 
-export default function Home() {
-  const [selectedPage, setSelectedPage] = useState(0);
-  const [showModal, setShowModal] = useState(false);
-  const [allData, setAllData] = useState();
+const Home = () => {
+  const navigate = useNavigate();
+
+  const handleNavigate = screen => {
+    navigate(screen);
+  };
 
   return (
     <div className={styles.container}>
-      {/* SIDE NAVBAR */}
-      <div className={styles.sidenav}>
-        <SideNavBar
-          setShowModal={setShowModal}
-          selectedPage={selectedPage}
-          setSelectedPage={setSelectedPage}
+      <div className="p-3 bg-[#E49BFF] h-[60px] w-full flex items-center">
+        <p className="text-2xl">School Management DashBoarb</p>
+      </div>
+
+      <div className="flex gap-3 justify-between">
+        <HomeCard
+          title="Add Class"
+          icon={<FcAddressBook size={30} />}
+          onPress={() => handleNavigate("/classform")}
         />
+        <HomeCard
+          title="Add Student"
+          icon={<FcGraduationCap size={30} />}
+          onPress={() => handleNavigate("/studentform")}
+        />
+        <HomeCard
+          title="Add Teacher"
+          icon={<FcBusinessman size={30} />}
+          onPress={() => handleNavigate("/teacherform")}
+        />
+        <HomeCard title="Class Analysis" icon={<FcBarChart size={30} />} />
+        <HomeCard title="Expense Analysis" icon={<FcCalculator size={30} />} />
       </div>
-
-      {/* SELECTED PAGE */}
-      <div className={styles.contentpage}>
-        {selectedPage === 0 && (
-          <Dashboard
-            showModal={showModal}
-            allData={allData}
-            setAllData={setAllData}
-          />
-        )}
-        {selectedPage === 1 && (
-          <Analytics
-            setSelectedPage={setSelectedPage}
-            allData={allData?.data}
-          />
-        )}
-      </div>
-
-      <AddQuizModal
-        showModal={showModal}
-        setSelectedPage={setSelectedPage}
-        closeModal={setShowModal}
-      />
     </div>
   );
-}
+};
+
+export default Home;

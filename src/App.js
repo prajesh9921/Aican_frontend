@@ -1,11 +1,11 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./screen/Homepage/home";
-import LoginAndRegister from "./screen/Login&Register/login&register";
+import TeacherForm from "./screen/Form/teacherform";
+import ClassForm from "./screen/Form/classform";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ProtectedRoute from "./utils/protectedRoute";
-import TakeQuiz from "./screen/TakeQuiz/takequiz";
+import StudentForm from "./screen/Form/studentform";
 
 function App() {
   return (
@@ -22,10 +22,10 @@ function App() {
         theme="dark"
       />
       <Routes>
-        <Route exact path="/" element={<LoginAndRegister />} />
-        <Route path="/home" element={<ProtectedRoute Component={Home}/>} />
-        <Route path="/auth" element={<LoginAndRegister/>} />
-        <Route path="/quiz/:quizid" element={<TakeQuiz />} />
+        <Route path="/" element={<Home/>} />
+        <Route path="/classform" element={<ClassForm/>} />
+        <Route path="/teacherform" element={<TeacherForm/>} />
+        <Route path="/studentform" element={<StudentForm/>} />
       </Routes>
     </>
   );
