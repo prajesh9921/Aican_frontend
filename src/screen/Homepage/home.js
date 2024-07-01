@@ -7,13 +7,13 @@ import {
   FcBusinessman,
   FcCalculator,
   FcBarChart,
-  FcGraduationCap
+  FcGraduationCap,
 } from "react-icons/fc";
 
 const Home = () => {
   const navigate = useNavigate();
 
-  const handleNavigate = screen => {
+  const handleNavigate = (screen) => {
     navigate(screen);
   };
 
@@ -39,8 +39,16 @@ const Home = () => {
           icon={<FcBusinessman size={30} />}
           onPress={() => handleNavigate("/teacherform")}
         />
-        <HomeCard title="Class Analysis" icon={<FcBarChart size={30} />} />
-        <HomeCard title="Expense Analysis" icon={<FcCalculator size={30} />} />
+        <HomeCard
+          title="Class Analysis"
+          icon={<FcBarChart size={30} />}
+          onPress={() => handleNavigate("/classanalysis")}
+        />
+        <HomeCard
+          title="Expense Analysis"
+          icon={<FcCalculator size={30} />}
+          onPress={() => handleNavigate("/expenseanalysis")}
+        />
       </div>
     </div>
   );

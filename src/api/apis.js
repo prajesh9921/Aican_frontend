@@ -77,10 +77,38 @@ const GetAllClasses = async (setLoading) => {
   }
 };
 
+const GetExpense = async (setLoading) => {
+  try {
+    setLoading(true);
+    const url = `${baseUrl}/getExpense`;
+    const response = await axios.get(url);
+    setLoading(false);
+    return response?.data;
+  } catch (error) {
+    console.log("Error getting expense", error?.response?.data);
+    setLoading(false);
+  }
+};
+
+const GetGenderRatio = async (setLoading) => {
+  try {
+    setLoading(true);
+    const url = `${baseUrl}/getGenderCount`;
+    const response = await axios.get(url);
+    setLoading(false);
+    return response?.data;
+  } catch (error) {
+    console.log("Error getting gender count", error?.response?.data);
+    setLoading(false);
+  }
+};
+
 export {
   AddClass,
   GetAllTeachers,
   GetAllClasses,
   AddTeacher,
-  AddStudent
+  AddStudent,
+  GetExpense,
+  GetGenderRatio
 };
