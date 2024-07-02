@@ -105,7 +105,7 @@ function ClassForm() {
           name="teachers"
           required
         >
-          <option value="" disabled>I'm interesting in...</option>
+          <option value="" disabled selected>I'm interesting in...</option>
           {teachers?.map(item => <option value={item?._id}>{item?.name}</option>)}
         </Select>
         <input

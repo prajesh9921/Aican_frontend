@@ -128,7 +128,7 @@ function StudentForm() {
           name="assignedclass"
           required
         >
-          <option value="" disabled>I'm interesting in...</option>v
+          <option value="" disabled selected>I'm interesting in...</option>v
           {classes?.map(item => <option value={`${item._id},${item.studentfees}`}>{item?.name}</option>)}
         </Select>
         <Field

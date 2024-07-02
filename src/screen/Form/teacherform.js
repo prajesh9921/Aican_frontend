@@ -126,7 +126,7 @@ function TeacherForm() {
           name="assignedclass"
           required
         >
-          <option value="" disabled>I'm interesting in...</option>
+          <option value="" selected disabled>I'm interesting in...</option>
           {classes?.map(item => <option value={item?._id}>{item?.name}</option>)}
         </Select>
         <input
