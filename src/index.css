@@ -1,11 +1,5 @@
-/* src/styles.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 body {
   margin: 0;
-  font-family: "Poppins", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
 }

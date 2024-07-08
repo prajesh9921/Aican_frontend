@@ -1,0 +1,13 @@
+.container {
+  padding: 20px;
+}
+
+.editor {
+  resize: none;
+  border-radius: 10px;
+  outline: none;
+  border: 1px solid #9681df;
+  box-shadow: 5px 5px 10px #907cd6, -5px -5px 10px #9c86e8;
+  margin-top: 30px;
+  padding: 10px;   
+}
